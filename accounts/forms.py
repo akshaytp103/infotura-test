@@ -48,6 +48,26 @@ class AddressForm(forms.ModelForm) :
             
             
             
+class ProfileForm(AddressForm):
     
+    dep_type =(
+    ('psc','psc'),
+    ('ssc','ssc'),
+    ('bank','bank'),
+    ('ugc','ugc'),
+    ('net','net'),
+) 
+    subject = forms.ModelChoiceField(queryset=Subject.objects.all())
+    department = forms.ChoiceField(choices=dep_type)
+    
+    class Meta(AddressForm.Meta):      
+        AddressForm.Meta.fields =['name','address','state','country','pin_code','mobile','Education','experience','department','subject']
         
-   
+
+    # def __init__(self, *args, **kwargs):
+    #     super(AddressForm,self).__init__(*args, **kwargs)
+
+    #     for field in self.fields :
+    #         self.fields[field].widget.attrs['class'] = 'form-control'
+            
+    

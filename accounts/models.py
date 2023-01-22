@@ -39,18 +39,20 @@ class AccountManager(BaseUserManager):
         return user
 
 
-facultytypes =(
-('COUNSELLOR','COUNSELLOR'),
-('RESEARCH ASSISTANT','RESEARCH ASSISTANT'),
-('GRAPHIC DESIGNER','GRAPHIC DESIGNER'),
-('WEBDEVELOPER','WEBDEVELOPER'),
-('TEACHER','TEACHER'),
-('ACCOUNTANT','ACCOUNTANT'),
-('VIDEO EDITOR','VIDEO EDITOR'),
-('MARKETING','MARKETING')
-)
+
   
 class Account(AbstractBaseUser):
+    facultytypes =(
+    ('COUNSELLOR','COUNSELLOR'),
+    ('RESEARCH ASSISTANT','RESEARCH ASSISTANT'),
+    ('GRAPHIC DESIGNER','GRAPHIC DESIGNER'),
+    ('WEBDEVELOPER','WEBDEVELOPER'),
+    ('TEACHER','TEACHER'),
+    ('ACCOUNTANT','ACCOUNTANT'),
+    ('VIDEO EDITOR','VIDEO EDITOR'),
+    ('MARKETING','MARKETING')
+    )
+    
     
     email           =models.EmailField(max_length=100,unique=True) 
     mobile          =models.CharField(max_length=10,unique=True,null=True)
@@ -59,6 +61,7 @@ class Account(AbstractBaseUser):
     is_active       =models.BooleanField(default=True)
     is_superadmin   =models.BooleanField(default=False)
     faculty         =models.CharField(choices=facultytypes,null=True,blank=True,max_length=50)
+    has_profile    =models.BooleanField(default=False)
     
     USERNAME_FIELD  ='email'
     REQUIRED_FIELDS =['faculty','mobile']
@@ -74,7 +77,10 @@ class Account(AbstractBaseUser):
     def has_module_perms(self,add_label):
         return True
 
-education_type=(
+
+class Profile(models.Model) :
+    
+    education_type=(
         ('sslc','sslc'),
         ('plustwo','plustwo'),
         ('degree','degree'),
@@ -83,13 +89,13 @@ education_type=(
         ('phd','phd')
     )
 
-experience_type=(
-    ('1','1'),
-    ('2','2'),
-    ('3','3'),
-    ('4','4'),
-)
-class Profile(models.Model) :
+    experience_type=(
+        ('1','1'),
+        ('2','2'),
+        ('3','3'),
+        ('4','4'),
+    )
+    
     name            =models.CharField(max_length=50) 
     user = models.ForeignKey(Account, on_delete=models.CASCADE)   
     address=models.CharField(max_length=200) 
@@ -109,31 +115,33 @@ class Profile(models.Model) :
         return self.name
     
     
-dep_type =(
+  
+class DEPARTMENT(models.Model):
+    dep_type =(
     ('psc','psc'),
     ('ssc','ssc'),
     ('bank','bank'),
     ('ugc','ugc'),
     ('net','net')
-)   
-class DEPARTMENT(models.Model):
-    user=models.ForeignKey(Account,on_delete=models.CASCADE)
+) 
+    profile=models.ForeignKey(Profile,on_delete=models.CASCADE)
     department=models.CharField(max_length=50,choices=dep_type)
     
+    def __str__(self) :
+        return self.profile.name
+    
+
+class Subject(models.Model):
+    name=models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
     
     
-subject_type =(
-    ('MATHS','MATHS'),
-    ('ENGLISH','ENGLISH'),
-    ('PHYSICS','PHYSICS'),
-    ('CHEMISTRY','CHEMISTRY'),
-    ('BIOLOGY','BIOLOGY'),
-    ('GEOGRAPHY','GEOGRAPHY'),
-    ('IT','IT'),
-    ('HISTORY','HISTORY'),
-    ('CURRENT AFFAIRS','CURRENT AFFAIRS'),
-)
 class Teacher(models.Model):
-    useuser=models.ForeignKey(Account,on_delete=models.CASCADE)
+    subject=models.ForeignKey(Subject, on_delete=models.CASCADE)
     profile=models.ForeignKey(Profile,on_delete=models.CASCADE)
-    subject=models.CharField(max_length=50,choices=subject_type)
+    
+    
+    def __str__(self) :
+        return self.profile.name
