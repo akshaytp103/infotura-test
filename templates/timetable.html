@@ -30,9 +30,48 @@
 
 </head>
 <body>
-	<p>hello hai welcome</p>
-	<button><a href="{% url 'logout' %}">Logout</a>	</button>
 	
+	<button><a href="{% url 'logout' %}">Logout</a>	</button>
+	<table class="table align-middle mb-0 bg-white">
+		<thead class="bg-light">
+		  <tr>
+			<th>DATE</th>
+			<th>QUARTER-1</th>
+			<th>QUARTER-2</th>
+			<th>QUARTER-3</th>
+			<th>QUARTER-4</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+			<td>
+			  <div class="d-flex align-items-center">				
+				
+				<div class="ms-3">
+				{% for prof in profile %}
+				  <p class="fw-bold mb-1">aa</p>
+				 
+				</div>
+			  </div>
+			</td>
+			<td>
+			  <p class="fw-normal mb-1">{{pro.name}}</p>
+			  <p class="text-muted mb-0">{{pro.address}}</p>
+			</td>
+			<td>
+			  <span class="">{{time}}</span>
+			</td>
+			<td>{{time}}</td>
+			<td>
+			  <button type="button" class="btn btn-link btn-sm btn-rounded">
+				Edit
+			  </button>
+			</td>
+		  </tr>
+		  
+			{% endfor %} 
+		</tbody>
+	  </table>
 	
 </body>
 

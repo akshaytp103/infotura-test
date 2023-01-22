@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, logout
 # Create your views here.
 
 def home(request):
-    return render(request,'test.html')
+    return render(request,'timetable.html')
 
 def register(request):
     form = RegistrationForm()
