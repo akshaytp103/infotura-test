@@ -5,8 +5,7 @@ from django.contrib import messages,auth
 from django.contrib.auth import authenticate, logout
 # Create your views here.
 
-def home(request):
-    return render(request,'timetable.html')
+
 
 def register(request):
     form = RegistrationForm()
@@ -45,11 +44,11 @@ def register(request):
 def login(request):
     if request.user.is_authenticated:
         if request.user.has_profile:
-            return redirect('home')
-        else:
-            if request.user.faculty == 'TEACHER':
-                return redirect('applications_teacher')
-            return redirect('applications')
+            return redirect('timetable')
+        # else:
+        #     if request.user.faculty == 'TEACHER':
+        #         return redirect('applications_teacher')
+        #     return redirect('applications')
 
     if request.method == "POST":
         
@@ -81,7 +80,7 @@ def applications(request):
             address = form.save(commit=False)
             address.user_id = request.user.id
             address.save()
-            return redirect('home')
+            return redirect('timetable')
     else:
         form = AddressForm()
     return render(request, 'home.html', {'form': form})
@@ -127,7 +126,7 @@ def applications_teacher(request):
             department.save()
             subject.save()
             
-            return redirect('home')
+            return redirect('timetable')
     else:
         form = ProfileForm()
     return render(request, 'home2.html', {'form': form})

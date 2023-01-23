@@ -4,32 +4,29 @@ from accounts.models import Subject,Teacher
 # Create your models here.
 
 class quarter(models.Model):
-    starttime = models.TimeField()
-    endtime = models.TimeField()
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     teacher = models.ForeignKey(Teacher,on_delete=models.CASCADE,null=True,blank=True)
     
     def __str__(self):
         return f'{self.subject.name}+{self.teacher}'
     
-# class timesheet(models.Model):
-#     date = models.DateField(auto_now_add=True)
-#     quarter_1 = models.ManyToManyField(quarter,related_name='quarter_1_quarter')
-#     quarter_2 = models.ManyToManyField(quarter,related_name='quarter_2_quarter')
-#     quarter_3 = models.ManyToManyField(quarter,related_name='quarter_3_quarter')
-#     quarter_4 = models.ManyToManyField(quarter,related_name='quarter_4_quarter')
+
     
-#     def __str__(self):
-#         return str(self.date)
-
-
 class Timetable(models.Model):
-    date = models.DateField(auto_now_add=False)
-    subject_1 = models.ManyToManyField(Subject,related_name='subject_1_subject')
-    subject_2 = models.ManyToManyField(Subject,related_name='subject_2_subject')
-    subject_3 = models.ManyToManyField(Subject,related_name='subject_3_subject')
-    subject_4 = models.ManyToManyField(Subject,related_name='subject_4_subject')
+    days=(
+        ('MONDAY','MONDAY'),
+        ('TUESDAY','TUESDAY'),
+        ('WEDNESDAY','WEDNESDAY'),
+        ('THURSDAY','THURSDAY'),
+        ('FRIDAY','FRIDAY'),
+        ('SATURDAY','SATURDAY'),
+        ('SUNDAY','SUNDAY'),
+    )
+    date = models.CharField(max_length=20,choices=days)
+    quarter_1 = models.ForeignKey(quarter,null=True,blank=True,on_delete=models.CASCADE,related_name='quarter_1_quarter')
+    quarter_2 = models.ForeignKey(quarter,null=True,blank=True,on_delete=models.CASCADE,related_name='quarter_2_quarter')
+    quarter_3 = models.ForeignKey(quarter,null=True,blank=True,on_delete=models.CASCADE,related_name='quarter_3_quarter')
+    quarter_4 = models.ForeignKey(quarter,null=True,blank=True,on_delete=models.CASCADE,related_name='quarter_4_quarter')
     
     def __str__(self):
         return str(self.date)
-    
